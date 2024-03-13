@@ -95,6 +95,7 @@ class Scaffold:
             self.add_row(gap)
         self.rows.extend(othr.rows)
 
+    # TODO: get the set of all fragments in the scaffold
     def fragment_junction_set(self):
         junctions = set()
         itr = self.fragments()

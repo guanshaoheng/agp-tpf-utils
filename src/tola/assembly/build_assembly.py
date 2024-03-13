@@ -76,15 +76,17 @@ class BuildAssembly(Assembly):
         self.add_missing_scaffolds_from_input(input_asm)
 
     def find_assembly_overlaps(
-        self, prtxt_asm: Assembly, input_asm: IndexedAssembly
+        self, 
+        prtxt_asm: Assembly, 
+        input_asm: IndexedAssembly
     ) -> None:
         logging.info(f"Pretext resolution = {self.bp_per_texel:,.0f} bp per texel\n")
         chr_namer = self.chr_namer
         err_length = self.error_length
-        for prtxt_scffld in prtxt_asm.scaffolds:
+        for prtxt_scffld in prtxt_asm.scaffolds:        # iterate through each scaffolds
             chr_namer.make_chr_name(prtxt_scffld)
-            for prtxt_frag in prtxt_scffld.fragments():
-                if found := input_asm.find_overlaps(prtxt_frag):
+            for prtxt_frag in prtxt_scffld.fragments(): # iterate through each fragments of the scaffold
+                if found := input_asm.find_overlaps(prtxt_frag):  # searching for overlaps in original asm 
                     chr_namer.label_scaffold(found, prtxt_frag)
                     found.trim_large_overhangs(err_length)
                     if found.rows:

@@ -6,6 +6,10 @@ from tola.assembly.scaffold import Scaffold
 
 
 class OverlapResult(Scaffold):
+    """
+    after indexing the bait in the reference asm, 
+    put the scaffold_name and overlaping range into the function here
+    """
     def __init__(self, bait, rows, start, end, name=None, tag=None, haplotype=None):
         if not name:
             name = f"matches to {bait.name} {bait.start} to {bait.end}"
@@ -172,6 +176,9 @@ class OverlapResult(Scaffold):
             return scffld
 
     def discard_start(self) -> None:
+        """
+        delete discard the rows from the stard in the overlap_scaffold object
+        """
         discard = self.rows.pop(0)
         self.start += discard.length
         while self.rows and isinstance(self.rows[0], Gap):
@@ -179,6 +186,9 @@ class OverlapResult(Scaffold):
             self.start += gap.length
 
     def discard_end(self) -> None:
+        """
+        delete discard the rows from the end in the overlap_scaffold object
+        """
         discard = self.rows.pop(-1)
         self.end -= discard.length
         while self.rows and isinstance(self.rows[-1], Gap):

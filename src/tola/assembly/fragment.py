@@ -45,6 +45,7 @@ class Fragment:
     def key_tuple(self) -> tuple:
         return self._name, self._start, self._end
 
+    #TODO: further develop this code to make a record of the coordinates of edits made by the curators
     def junction_tuple(self, othr) -> tuple:
         """
         Encodes the positions of two adjacent Fragments in a Scaffold, with

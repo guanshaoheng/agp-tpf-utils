@@ -30,6 +30,7 @@ def format_agp(asm, file):
                     ),
                 )
             else:
+                # if the output is in type of Fragment
                 cols.extend(
                     (
                         "W",

@@ -15,6 +15,7 @@ def parse_agp(file, name):
     strand_dict = {"?": 0, "+": 1, "-": -1}
     for line in file:
         if re.match(r"\s*$", line):
+            # matches lines only containing spaces
             # Skip blank lines
             continue
 
@@ -32,12 +33,13 @@ def parse_agp(file, name):
         # remove it.
         fields = line.rstrip().split("\t")
 
-        if fields[0] != scaffold_name:
-            scaffold_name = fields[0]
+        # continue to the lines pf scaffold information
+        if fields[0] != scaffold_name: # what if there is a scaffold appears twice?
+            scaffold_name = fields[0]  # update scaffold name to the latest one, create a new scaffold
             scaffold = Scaffold(scaffold_name)
             asm.add_scaffold(scaffold)
 
-        if fields[4] in ("U", "N"):
+        if fields[4] in ("U", "N"):# add a row of gap in the scaffold
             scaffold.add_row(
                 Gap(
                     length=fields[5],
@@ -45,7 +47,7 @@ def parse_agp(file, name):
                 ),
             )
         else:
-            scaffold.add_row(
+            scaffold.add_row(  # add a row of fragment in the scaffold 
                 Fragment(
                     name=fields[5],
                     start=fields[6],

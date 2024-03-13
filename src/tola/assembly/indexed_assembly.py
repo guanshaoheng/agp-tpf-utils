@@ -4,6 +4,9 @@ from tola.assembly.overlap_result import OverlapResult
 
 
 class IndexedAssembly(Assembly):
+    """
+    searching for fragments on the reference/original asm 
+    """
     def __init__(self, name, header=None, scaffolds=None):
         self.name = str(name)
         self.header = header if header else []
@@ -51,7 +54,7 @@ class IndexedAssembly(Assembly):
         which overlap. Any leading or trailing Gaps in the overlapping rows
         are removed.
         """
-        scffld = self.scaffold_by_name(bait.name)
+        scffld = self.scaffold_by_name(bait.name)  # searching for the scaffold where is the fragment
         if not scffld.rows:
             msg = f"Scaffold '{scffld.name}' is empty"
             raise ValueError(msg)
@@ -100,9 +103,9 @@ class IndexedAssembly(Assembly):
             j_ovr = j
 
         # Walk start and end pointers back to ignore Gaps on the ends
-        while isinstance(scffld.rows[i_ovr], Gap):
+        while isinstance(scffld.rows[i_ovr], Gap):  # delete the gap at head
             i_ovr += 1
-        while isinstance(scffld.rows[j_ovr], Gap):
+        while isinstance(scffld.rows[j_ovr], Gap):  # delete the gap at end
             j_ovr -= 1
         if not i_ovr <= j_ovr:
             return None

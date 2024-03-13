@@ -2,6 +2,7 @@ import click
 import logging
 import pathlib
 import sys
+sys.path.append("/Users/sg35/agp-tpf-utils/src")
 
 from tola.assembly.assembly_stats import AssemblyStats
 from tola.assembly.build_assembly import BuildAssembly

@@ -2,10 +2,12 @@ import click
 import pathlib
 import re
 import sys
+sys.path.append(r"/Users/sg35/agp-tpf-utils/src")
 
 from tola.assembly.parser import parse_agp, parse_tpf
 from tola.assembly.format import format_agp, format_tpf
 
+# runing the @click command to assign the input variables
 
 @click.command(
     help="""Parse and reformat ToL AGP and TPF files. Parses the files
@@ -20,9 +22,10 @@ from tola.assembly.format import format_agp, format_tpf
         readable=True,
         path_type=pathlib.Path,
     ),
+    # help="""Path of the input files. Readable file path accepted only."""
 )
 @click.option(
-    "--input-format",
+    "--input_format",
     "-i",
     type=click.Choice(
         ["AGP", "TPF"],
@@ -32,7 +35,7 @@ from tola.assembly.format import format_agp, format_tpf
       extension, or defaults to 'AGP'""",
 )
 @click.option(
-    "--output-file",
+    "--output_file",
     "-o",
     type=click.Path(
         path_type=pathlib.Path,
@@ -42,7 +45,7 @@ from tola.assembly.format import format_agp, format_tpf
       is given, ouput is printed to STDOUT""",
 )
 @click.option(
-    "--format",
+    "--output_format",
     "-f",
     "output_format",
     type=click.Choice(
@@ -63,21 +66,26 @@ from tola.assembly.format import format_agp, format_tpf
     "--qc-overlaps/--no-qc-overlaps",
     default=False,
     help="Report to STDERR any fragments within each assembly which overlap",
-)
+)  
 def cli(
     input_files, input_format, output_file, output_format, assembly_name, qc_overlaps
-):
+):  
+    # check output filename
     if output_file:
         if not output_format:
+            # if there is output file but the format is not defined
+            # infer the output format from the output_file name
             output_format = format_from_file_extn(output_file)
         out_fh = output_file.open("w")
     else:
         out_fh = sys.stdout
-
-    if not output_format:
-        output_format = "AGP"
+    
+    if not output_format and (not input_format or input_format=="AGP"):
+        # use this to check the difference betwee AGP and TPF
+        output_format = "TPF"
 
     if input_files:
+        # there are input files
         for pth in input_files:
             # Select the format of the input file
             if input_format:
@@ -116,6 +124,7 @@ def cli(
 
 
 def process_fh(in_fh, in_fmt, asm_name, out_fh, out_fmt, qc_overlaps):
+    # parse the file 
     if in_fmt == "AGP":
         asm = parse_agp(in_fh, asm_name)
     elif in_fmt == "TPF":

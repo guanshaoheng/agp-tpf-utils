@@ -10,6 +10,7 @@ class Assembly:
         self.name = str(name)
         self.scaffolds = scaffolds if scaffolds else []
         self.header = header if header else []
+        # TODO: define a value here should be better?
         if bp_per_texel:
             self.bp_per_texel = bp_per_texel
 
@@ -83,7 +84,8 @@ class Assembly:
         return tuple(
             int(x) if i % 2 else x for i, x in enumerate(re.split(r"(\d+)", obj.name))
         )
-
+    
+    #TODO: get the set within scaffolds
     def fragment_junction_set(self):
         junctions = set()
         for scffld in self.scaffolds:

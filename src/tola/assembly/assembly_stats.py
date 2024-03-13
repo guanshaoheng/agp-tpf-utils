@@ -14,6 +14,7 @@ class AssemblyStats:
         self.joins = 0
         self.assembly_scaffold_lengths = {}
 
+    #TODO: calculate stats shown in the log file
     def make_stats(self, output_assemblies: dict[str | None, Assembly]) -> None:
         input_set = self.input_assembly.fragment_junction_set()
         output_set = set()
